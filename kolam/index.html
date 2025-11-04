@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Kolam Pemancingan Baraya</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-card">
+            <div class="logo">
+                <h1>Kolam Pemancingan Baraya</h1>
+                <p>Sistem Pendaftaran Pemancing</p>
+            </div>
+            
+            <div class="login-options">
+                <button id="btn-tamu" class="btn-login">Login sebagai Tamu</button>
+                <button id="btn-admin" class="btn-login">Login sebagai Admin</button>
+            </div>
+            
+            <div id="admin-login" class="admin-login hidden">
+                <h3>Login Admin</h3>
+                <form id="admin-form">
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Masuk</button>
+                </form>
+                <p id="error-msg" class="error hidden">Password salah!</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

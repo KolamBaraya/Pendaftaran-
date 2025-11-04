@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Kolam Pemancingan Baraya</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Kolam Pemancingan Baraya</h1>
+            <div class="user-info">
+                <span>Anda login sebagai Admin</span>
+                <button id="logout" class="btn-logout">Logout</button>
+            </div>
+        </header>
+        
+        <main>
+            <div class="card">
+                <h2>Daftar Pemancing Terdaftar</h2>
+                <p class="admin-info">Anda dapat menghapus data pemancing yang sudah terdaftar.</p>
+                <div class="table-container">
+                    <table id="tabel-pendaftaran">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Lengkap</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-body">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
