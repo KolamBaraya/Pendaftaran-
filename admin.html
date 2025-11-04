@@ -11,7 +11,7 @@
         <header>
             <h1>Kolam Pemancingan Baraya</h1>
             <div class="user-info">
-                <span>Anda login sebagai Admin</span>
+                <span>Papah & Mamah login sebagai Admin</span>
                 <button id="logout" class="btn-logout">Logout</button>
             </div>
         </header>
@@ -20,19 +20,38 @@
             <div class="card">
                 <div class="admin-header">
                     <h2>Daftar Pemancing Terdaftar</h2>
-                    <button id="hapus-semua" class="btn-danger">Hapus Semua Data</button>
+                    <div class="admin-actions">
+                        <button id="hapus-semua" class="btn-danger" disabled>
+                            🗑️ Hapus Semua Data
+                        </button>
+                    </div>
                 </div>
-                <p class="admin-info">Anda dapat menghapus data pemancing yang sudah terdaftar.</p>
                 
+                <div class="stats-info">
+                    <p>Total: <span id="total-data">0</span> pendaftar</p>
+                </div>
+
                 <!-- Modal Konfirmasi Hapus Semua -->
                 <div id="modal-hapus-semua" class="modal hidden">
                     <div class="modal-content">
-                        <h3>Konfirmasi Hapus Semua Data</h3>
-                        <p>Apakah Anda yakin ingin menghapus <strong>SEMUA DATA</strong> pendaftaran?</p>
-                        <p class="warning-text">Tindakan ini tidak dapat dibatalkan!</p>
+                        <div class="modal-header">
+                            <h3>⚠️ Konfirmasi Hapus Semua Data</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>Papah & Mamah akan menghapus <strong id="jumlah-data-hapus">0</strong> data pendaftaran.</p>
+                            <p class="warning-text">Tindakan ini tidak dapat dibatalkan! Semua data akan hilang permanen.</p>
+                            <div class="confirmation-check">
+                                <input type="checkbox" id="confirm-delete">
+                                <label for="confirm-delete">Saya memahami konsekuensi dan yakin ingin menghapus semua data</label>
+                            </div>
+                        </div>
                         <div class="modal-actions">
-                            <button id="confirm-hapus-semua" class="btn-danger">Ya, Hapus Semua</button>
-                            <button id="cancel-hapus-semua" class="btn-cancel">Batal</button>
+                            <button id="confirm-hapus-semua" class="btn-danger" disabled>
+                                Ya, Hapus Semua
+                            </button>
+                            <button id="cancel-hapus-semua" class="btn-cancel">
+                                Batal
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -43,6 +62,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Lengkap</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="tabel-body">
