@@ -20,6 +20,20 @@
             <div class="card">
                 <h2>Daftar Pemancing Terdaftar</h2>
                 <p class="admin-info">Papah & Mamah dapat menghapus data pemancing yang sudah terdaftar.</p>
+
+                <!-- Konfirmasi Hapus Semua -->
+                <div id="modal-hapus-semua" class="modal hidden">
+                    <div class="modal-content">
+                        <h3>Konfirmasi Hapus Semua Data</h3>
+                        <p>Apakah Anda yakin ingin menghapus <strong>SEMUA DATA</strong> pendaftaran?</p>
+                        <p class="warning-text">Tindakan ini tidak dapat dibatalkan!</p>
+                        <div class="modal-actions">
+                            <button id="confirm-hapus-semua" class="btn-danger">Ya, Hapus Semua</button>
+                            <button id="cancel-hapus-semua" class="btn-cancel">Batal</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="table-container">
                     <table id="tabel-pendaftaran">
                         <thead>
@@ -28,6 +42,7 @@
                                 <th>Nama Lengkap</th>
                             </tr>
                         </thead>
+                        
                         <tbody id="tabel-body">
                             <!-- Data akan diisi oleh JavaScript -->
                         </tbody>
