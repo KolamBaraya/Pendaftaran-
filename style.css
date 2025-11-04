@@ -272,32 +272,69 @@ tr:hover {
     margin-bottom: 15px;
     flex-wrap: wrap;
     gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ecf0f1;
 }
 
 .admin-header h2 {
     margin-bottom: 0;
     border-bottom: none;
+    color: #2c3e50;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 /* Button Danger Styles */
 .btn-danger {
-    padding: 10px 20px;
-    background-color: #e74c3c;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 0.9rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
 }
 
-.btn-danger:hover {
-    background-color: #c0392b;
+.btn-danger:hover:not(:disabled) {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.4);
+}
+
+.btn-danger:active:not(:disabled) {
+    transform: translateY(0);
 }
 
 .btn-danger:disabled {
-    background-color: #95a5a6;
+    background: #bdc3c7;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.6;
+}
+
+/* Stats Info */
+.stats-info {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 5px solid #1abc9c;
+    box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+}
+
+.stats-info p {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 /* Modal Styles */
@@ -307,97 +344,172 @@ tr:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    backdrop-filter: blur(5px);
 }
 
 .modal-content {
     background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     max-width: 500px;
     width: 90%;
+    animation: modalAppear 0.3s ease-out;
 }
 
-.modal-content h3 {
-    color: #e74c3c;
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    padding: 20px;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-body p {
     margin-bottom: 15px;
-}
-
-.modal-content p {
-    margin-bottom: 10px;
     line-height: 1.5;
+    font-size: 1rem;
 }
 
 .warning-text {
     color: #e74c3c;
     font-weight: bold;
     background-color: #fadbd8;
-    padding: 10px;
-    border-radius: 4px;
+    padding: 15px;
+    border-radius: 8px;
     border-left: 4px solid #e74c3c;
+    font-size: 0.95rem;
+}
+
+.confirmation-check {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.confirmation-check input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+.confirmation-check label {
+    font-weight: 500;
+    color: #2c3e50;
+    cursor: pointer;
 }
 
 .modal-actions {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     justify-content: flex-end;
-    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+    border-top: 1px solid #e9ecef;
 }
 
 .btn-cancel {
-    padding: 10px 20px;
-    background-color: #95a5a6;
+    padding: 12px 25px;
+    background: #95a5a6;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 }
 
 .btn-cancel:hover {
-    background-color: #7f8c8d;
+    background: #7f8c8d;
+    transform: translateY(-1px);
 }
 
 /* Empty State */
 .empty-state {
     text-align: center;
-    padding: 40px 20px;
+    padding: 60px 20px;
     color: #7f8c8d;
 }
 
 .empty-state p {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
 }
 
-/* Stats Info */
-.stats-info {
-    background-color: #e8f4fd;
-    padding: 10px 15px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    border-left: 4px solid #3498db;
+.empty-state small {
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
 
-.stats-info p {
-    margin: 0;
-    color: #2c3e50;
-    font-weight: 500;
+/* Table Improvements */
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Modal */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0;
+}
+
+th {
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+    color: white;
+    font-weight: 600;
+    padding: 15px 12px;
+    text-align: left;
+    position: sticky;
+    top: 0;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .admin-header {
         flex-direction: column;
         align-items: stretch;
+        text-align: center;
     }
     
-    .admin-header h2 {
-        text-align: center;
+    .admin-actions {
+        justify-content: center;
     }
     
     .modal-actions {
@@ -405,7 +517,36 @@ tr:hover {
     }
     
     .modal-content {
-        padding: 20px;
         margin: 20px;
+        width: calc(100% - 40px);
+    }
+    
+    .btn-danger,
+    .btn-cancel {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .stats-info {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .btn-danger {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .modal-body {
+        padding: 15px;
+    }
+    
+    .confirmation-check label {
+        font-size: 0.9rem;
     }
 }
