@@ -110,82 +110,112 @@ if (window.location.pathname.endsWith('admin.html')) {
         const modalHapusSemua = document.getElementById('modal-hapus-semua');
         const confirmHapusSemua = document.getElementById('confirm-hapus-semua');
         const cancelHapusSemua = document.getElementById('cancel-hapus-semua');
+        const confirmDeleteCheckbox = document.getElementById('confirm-delete');
+        const totalDataElement = document.getElementById('total-data');
+        const jumlahDataHapusElement = document.getElementById('jumlah-data-hapus');
 
         // Tampilkan data yang sudah terdaftar
         displayData();
 
         // Logout
         logoutBtn.addEventListener('click', function() {
-            window.location.href = 'index.html';
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                window.location.href = 'index.html';
+            }
         });
 
         // Tombol Hapus Semua
         hapusSemuaBtn.addEventListener('click', function() {
             const data = getData();
             if (data.length === 0) {
-                alert('Tidak ada data untuk dihapus!');
+                showNotification('Tidak ada data untuk dihapus!', 'warning');
                 return;
             }
-            modalHapusSemua.classList.remove('hidden');
+            showDeleteConfirmationModal(data.length);
         });
 
         // Konfirmasi Hapus Semua
         confirmHapusSemua.addEventListener('click', function() {
             hapusSemuaData();
             modalHapusSemua.classList.add('hidden');
-            alert('Semua data berhasil dihapus!');
+            showNotification('Semua data berhasil dihapus!', 'success');
         });
 
         // Batal Hapus Semua
         cancelHapusSemua.addEventListener('click', function() {
-            modalHapusSemua.classList.add('hidden');
+            closeModal();
+        });
+
+        // Checkbox konfirmasi
+        confirmDeleteCheckbox.addEventListener('change', function() {
+            confirmHapusSemua.disabled = !this.checked;
         });
 
         // Tutup modal ketika klik di luar
         modalHapusSemua.addEventListener('click', function(e) {
             if (e.target === modalHapusSemua) {
-                modalHapusSemua.classList.add('hidden');
+                closeModal();
             }
         });
+
+        // Keyboard support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !modalHapusSemua.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Fungsi untuk menampilkan modal konfirmasi hapus
+        function showDeleteConfirmationModal(dataCount) {
+            jumlahDataHapusElement.textContent = dataCount;
+            confirmDeleteCheckbox.checked = false;
+            confirmHapusSemua.disabled = true;
+            modalHapusSemua.classList.remove('hidden');
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            modalHapusSemua.classList.add('hidden');
+            confirmDeleteCheckbox.checked = false;
+            confirmHapusSemua.disabled = true;
+        }
 
         // Fungsi untuk menampilkan data di tabel dengan tombol hapus
         function displayData() {
             const data = getData();
             tabelBody.innerHTML = '';
+            totalDataElement.textContent = data.length;
 
             if (data.length === 0) {
                 const emptyRow = document.createElement('tr');
                 emptyRow.innerHTML = `
                     <td colspan="16" class="empty-state">
-                        <p>Belum ada data pendaftaran</p>
+                        <p>📝 Belum ada data pendaftaran</p>
                         <small>Data akan muncul di sini setelah tamu melakukan pendaftaran</small>
                     </td>
                 `;
                 tabelBody.appendChild(emptyRow);
                 
-                // Nonaktifkan tombol hapus semua jika tidak ada data
+                // Nonaktifkan tombol hapus semua
                 hapusSemuaBtn.disabled = true;
+                hapusSemuaBtn.innerHTML = '🗑️ Hapus Semua Data';
                 return;
             }
 
-            // Aktifkan tombol hapus semua jika ada data
+            // Aktifkan tombol hapus semua
             hapusSemuaBtn.disabled = false;
-
-            // Tambahkan info jumlah data
-            let statsInfo = document.querySelector('.stats-info');
-            if (!statsInfo) {
-                statsInfo = document.createElement('div');
-                statsInfo.className = 'stats-info';
-                const tableContainer = document.querySelector('.table-container');
-                tableContainer.parentNode.insertBefore(statsInfo, tableContainer);
-            }
-            statsInfo.innerHTML = `<p>Total: ${data.length} pendaftar</p>`;
+            hapusSemuaBtn.innerHTML = `🗑️ Hapus Semua Data (${data.length})`;
 
             data.forEach((item, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td><button class="btn-delete" data-index="${index}">Hapus</button></td>
+                    <td><strong>${escapeHtml(item.nama)}</strong></td>
+                    <td>
+                        <button class="btn-delete" data-index="${index}" title="Hapus data ini">
+                            ❌ Hapus
+                        </button>
+                    </td>
                 `;
                 tabelBody.appendChild(row);
             });
@@ -194,9 +224,13 @@ if (window.location.pathname.endsWith('admin.html')) {
             document.querySelectorAll('.btn-delete').forEach(button => {
                 button.addEventListener('click', function() {
                     const index = parseInt(this.getAttribute('data-index'));
-                    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                    const data = getData();
+                    const item = data[index];
+                    
+                    if (confirm(`Apakah Anda yakin ingin menghapus data ${item.nama}?`)) {
                         deleteData(index);
                         displayData();
+                        showNotification(`Data ${item.nama} berhasil dihapus!`, 'success');
                     }
                 });
             });
@@ -218,8 +252,98 @@ if (window.location.pathname.endsWith('admin.html')) {
         // Fungsi untuk format tanggal
         function formatTanggal(tanggalString) {
             if (!tanggalString) return '-';
-            const tanggal = new Date(tanggalString);
-            return tanggal.toLocaleDateString('id-ID');
+            try {
+                const tanggal = new Date(tanggalString);
+                return tanggal.toLocaleDateString('id-ID', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return tanggalString;
+            }
+        }
+
+        // Fungsi untuk escape HTML (keamanan)
+        function escapeHtml(unsafe) {
+            if (unsafe === null || unsafe === undefined) return '';
+            return unsafe
+                .toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type = 'info') {
+            // Hapus notifikasi sebelumnya
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()">×</button>
+            `;
+
+            // Tambahkan styles untuk notifikasi
+            const style = document.createElement('style');
+            style.textContent = `
+                .notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    color: white;
+                    font-weight: 600;
+                    z-index: 1001;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    animation: slideIn 0.3s ease-out;
+                }
+                .notification-success { background: linear-gradient(135deg, #27ae60, #229954); }
+                .notification-warning { background: linear-gradient(135deg, #f39c12, #e67e22); }
+                .notification-error { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+                .notification-info { background: linear-gradient(135deg, #3498db, #2980b9); }
+                .notification button {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 18px;
+                    cursor: pointer;
+                    padding: 0;
+                    width: 20px;
+                    height: 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            if (!document.querySelector('#notification-styles')) {
+                style.id = 'notification-styles';
+                document.head.appendChild(style);
+            }
+
+            document.body.appendChild(notification);
+
+            // Auto remove setelah 5 detik
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
         }
     });
 }
