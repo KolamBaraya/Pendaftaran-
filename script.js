@@ -185,20 +185,6 @@ if (window.location.pathname.endsWith('admin.html')) {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${item.nama}</td>
-                    <td>${item.noKtp}</td>
-                    <td>${item.alamat}</td>
-                    <td>${item.noTelp}</td>
-                    <td>${item.jenisKelamin}</td>
-                    <td>${item.umur}</td>
-                    <td>${item.asalKota}</td>
-                    <td>${item.pendidikan}</td>
-                    <td>${item.pekerjaan}</td>
-                    <td>${item.hobi}</td>
-                    <td>${formatTanggal(item.tanggalLahir)}</td>
-                    <td>${item.email}</td>
-                    <td>${item.mediaSosial}</td>
-                    <td>${item.motivasi}</td>
                     <td><button class="btn-delete" data-index="${index}">Hapus</button></td>
                 `;
                 tabelBody.appendChild(row);
